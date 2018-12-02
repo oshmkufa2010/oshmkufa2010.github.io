@@ -23,8 +23,7 @@ github_username:  oshmkufa2010
 
 # Build settings
 markdown: kramdown
-# theme: minima
-theme: jekyll-theme-mdui
+theme: minima
 plugins:
   - jekyll-feed
 
