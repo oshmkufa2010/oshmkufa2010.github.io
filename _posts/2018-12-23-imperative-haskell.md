@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 在Haskell里写“命令式”风格代码
+title: 在Haskell里写“命令式”风格代码
 permalink: imperative-haskell
 date: 2018-12-23 22:23:21
 ---
