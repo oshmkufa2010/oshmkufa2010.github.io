@@ -54,7 +54,8 @@ Free Monad和List一样，也有类似于foldMap这样的函数：
 
 ```haskell
 data Free f a = Pure a
-              | Roll (f (Free f a)) deriving (Functor)
+              | Roll (f (Free f a))
+              deriving (Functor)
 
 instance Functor f => Monad (Free f) where
   return = Pure 
