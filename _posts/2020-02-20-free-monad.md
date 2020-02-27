@@ -45,7 +45,6 @@ instance Monoid ((->) a a) where
 
 foldr' :: (a -> b -> b) -> b -> List a -> b
 foldr' abb b l = foldMap abb l b
--- 
 ```
 
 可以看出foldMap决定了List是怎样进行遍历的(其他结构比如Tree也可以实现foldMap，foldMap反应了结构的遍历性质，详细请参考Foldable这个type class)，而各种不同的Monoid实现决定了遍历过程中元素是怎样结合在一起的。
@@ -54,7 +53,8 @@ foldr' abb b l = foldMap abb l b
 Free Monad和List一样，也有类似于foldMap这样的函数：
 
 ```haskell
-data Free f a = Pure a | Roll (f (Free f a)) deriving (Functor)
+data Free f a = Pure a
+              | Roll (f (Free f a)) deriving (Functor)
 
 instance Functor f => Monad (Free f) where
   return = Pure 
@@ -79,7 +79,8 @@ foldFree fm (Roll f) = join (fmap (foldFree fm) (fm f))
 我们来试着用Free Monad来实现一个交互式读取和输出的DSL:
 
 ```haskell
-data InteractionF interaction = Say String (() -> interaction) | Ask (String -> interaction)
+data InteractionF interaction = Say String (() -> interaction)
+                              | Ask (String -> interaction)
 
 instance Functor InteractionF where
   fmap f (Say str cont) = Say str (f . cont)
