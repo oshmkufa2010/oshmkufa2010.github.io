@@ -13,7 +13,7 @@ get("http://xxx.com/users", resp => console.log(resp.users))
 这里的回调函数就是一种`Continuation`
 
 CPS(Continuation Pass Style, 延续传递风格)就是指这样一种代码风格：函数不返回值，而是通过传递一个`Continuation`来获取函数计算的结果，例如：
-```Haskell
+```haskell
 -- 普通风格，直接返回Int
 add :: Int -> Int ->Int
 add x y = x + y
@@ -41,17 +41,17 @@ f a b c = square_cps a $ \x -> square_cps b $ \y -> add_cps x y $ \z -> square_c
 对于返回类型为`a`的函数，总是可以将它转换为返回类型为`(a -> r) -> r`的函数，这个转换过程叫做CPS变换
 将返回类型`(a -> r) -> r`抽象成`Cont`类型：
 
-```Haskell
+```haskell
 newtype Cont r a = Cont { runCont :: (a -> r) -> r }
 ```
 
 `Cont r a`表示：这是一个未完成的计算，计算完成后的结果类型为`a`，但是不能直接取出这个结果，需要用一个类型为`a -> r`的函数(Continuation)来取出，取出的方式是调用`runCont`:
-```Haskell
+```haskell
 cont = Cont $ add_cps 1 2
 runCont cont show
 ```
 然后我们会发现`Cont`有点像`Monad`，如果`contra`是一个类型为`Cont r a`的`Monad`，那么可以通过`contra >>= \a -> contrb`得到一个类型为`Cont r b`的`Monad`，多个CPS函数的复合就会变得简单了，因为Haskell为`Monad`类型类提供了`do notation`，可以让我们以命令式的方式组合多个`Monad`, 上面的平方和公式f可以改写为:
-```Haskell
+```haskell
 f :: Int -> Int -> Int -> Cont r Int
 f a b c = do
   x <- square_cont a
@@ -62,7 +62,7 @@ f a b c = do
 比原始方案简单了很多
 
 `Cont Monad`的实现如下：
-```Haskell
+```haskell
 instance Monad (Cont r) where
   return a = Cont $ \k -> k a
   -- s :: Cont r a

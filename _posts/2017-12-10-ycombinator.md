@@ -17,7 +17,7 @@ f n = if n > 1 then n * f (n-1) else 1
 可以猜测能求阶乘的函数有很多个,比如`f n = foldl (*) [1..n]`就是其中之一.于是我们将能求阶乘的函数`f`当成一个变量,这样定义阶乘就变成了求`f`的值
 
 定义
-```Haskell
+```haskell
 g f = \n -> if n > 1 then n * f (n-1) else 1
 ```
 

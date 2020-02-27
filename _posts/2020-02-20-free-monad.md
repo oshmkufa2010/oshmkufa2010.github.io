@@ -9,7 +9,7 @@ title: Free Monad
 ## List和foldMap
 如果我们想在List上做一些操作，会使用foldMap：
 
-```Haskell
+```haskell
 data List a = Nil | Cons a (List a)
 
 foldMap :: Monoid m => (a -> m) -> （List a -> m）
@@ -19,7 +19,7 @@ foldMap f (Cons x xs) = f x `mappend` foldMap f xs
 
 通过实现各种Monoid，foldMap可以做各种List上的操作：
 
-```Haskell
+```haskell
 -- Int求和
 instance Monoid Int where
   mempty = 0
@@ -53,7 +53,7 @@ foldr' abb b l = foldMap abb l b
 ## Free Monad和foldFree
 Free Monad和List一样，也有类似于foldMap这样的函数：
 
-```Haskell
+```haskell
 data Free f a = Pure a | Roll (f (Free f a)) deriving (Functor)
 
 instance Functor f => Monad (Free f) where
@@ -78,7 +78,7 @@ foldFree fm (Roll f) = join (fmap (foldFree fm) (fm f))
 ## 案例：交互式DSL
 我们来试着用Free Monad来实现一个交互式读取和输出的DSL:
 
-```Haskell
+```haskell
 data InteractionF interaction = Say String (() -> interaction) | Ask (String -> interaction)
 
 instance Functor InteractionF where

@@ -5,7 +5,7 @@ permalink: imperative-haskell
 date: 2018-12-23 22:23:21
 ---
 前不久在Codewars上看见一道很有意思的[题目](https://www.codewars.com/kata/5453af58e6c920858d000823)，大致意思就是要你用Haskell这样纯粹的函数式编程语言来写如下看起来很“命令式”的代码：
-```Haskell
+```haskell
 factorial :: Integer -> Integer
 factorial n = def $ do
   result <- var 1
@@ -27,12 +27,12 @@ factorial n = def $ do
 
 在Haskell里，这种状态变化特别适合用`State Monad`来表达，表达式求值的过程，实际上就是`Env`这个`State`的变化过程
 
-```Haskell
+```haskell
 type ImperativeExpr a = State Env a
 ```
 
 由于无法通过变量名来标记变量，我们通过变量声明的顺序来标记变量：
-```Haskell
+```haskell
 type Index = Int
 newtype Variable = Variable Index
 
@@ -47,7 +47,7 @@ var v = do
 ```
 
 除了变量，这个题目中还有字面量这一概念，字面量很简单，它是不可变的，只需简单包住一下即可
-```Haskell
+```haskell
 newtype Lit = Lit Integer
 
 lit :: Integer -> Lit
@@ -58,7 +58,7 @@ lit = Lit
 - `Lit`可以出现在`*=`这种符号的右边，也可当做`while`的条件变量，但是它不能出现在`*=`这种符号的左边，因为它是不可变的
 
 综上，`Variable`和`Lit`是两种不同的类型，但是它们有一些共同点，就是它们都可以被当做“值”来使用，我们用一个`type class`来表现出这种共同点：
-```Haskell
+```haskell
 class Value v where
   evalValue :: v -> Env -> Integer
 
@@ -69,7 +69,7 @@ instance Value Lit where
   evalValue (Lit value) _ = value
 ```
 试着实现一下`*=`：
-```Haskell
+```haskell
 (*=) :: Value v => Variable -> v -> ImpreativeExpr ()
 (Variable index) *= b = do
   env <- get
@@ -80,7 +80,7 @@ instance Value Lit where
     in put env'
 ```
 `while`的实现也就比较简单了，简单来说就是当不满足终止条件时就不断改变`Env`：
-```Haskell
+```haskell
 while :: Value v => v -> (Integer -> Bool) -> ImpreativeExpr () -> ImpreativeExpr () 
 while r f act = do
   env <- get
@@ -91,7 +91,7 @@ while r f act = do
     while r f act
 ```
 `def`实际上就是对`ImperativeExpr`进行求值：
-```Haskell
+```haskell
 def :: Value v => ImpreativeExpr v -> Integer
 def m = let (v, env) = runState m empty in evalValue v env
 ```

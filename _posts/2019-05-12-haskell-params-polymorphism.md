@@ -10,7 +10,7 @@ author: cailin
 > 参数多态在程序设计语言与类型论中是指声明与定义函数、复合类型、变量时不指定其具体的类型，而把这部分类型作为参数使用，使得该定义对各种具体类型都适用
 
 例如Haskell的`id`函数：
-```Haskell
+```haskell
 id :: forall a. a -> a
 id x = x
 ```
@@ -22,7 +22,7 @@ id x = x
 
 再考虑以下的函数
 
-```Haskell
+```haskell
 foo :: forall a. (a -> a) ->  Bool
 foo f = f True
 ```
@@ -30,7 +30,7 @@ foo f = f True
 
 解决这个问题的方法是开启GHC的`RankNTypes`扩展并写成下面的样子：
 
-```Haskell
+```haskell
 foo' :: (forall a. a -> a) -> Bool
 foo' f = f True
 ```
