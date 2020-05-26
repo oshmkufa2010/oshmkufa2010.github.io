@@ -8,7 +8,7 @@ permalink: idris-type-safe-sprintf
 sprintf "%c"  -- Char -> String
 sprintf "%d, %c" -- Integer -> Char -> String
 ```
-可以看出，`sprintf format`的类型是随着`format1`的值变化而变化的，换句话说，sprintf format的类型依赖于format的值，这种类型依赖于值的类型就叫做*依赖类型*
+可以看出，`sprintf format`的类型是随着`format`的值变化而变化的，换句话说，`sprintf format`的类型依赖于`format`的值，这种类型依赖于值的类型就叫做*依赖类型*
 
 在Idris中，`sprintf`函数的类型表示为：
 ```idirs
