@@ -16,7 +16,7 @@
 title: 未来道具研究所
 email: cailinunix@gmail.com 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://oshmkufa2010.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  oshmkufa2010
 
 highlighter: rouge
@@ -26,6 +26,9 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
+
+google_analytics: UA-175015929-1
+baidu_analytics: 25b35ae55973e0ac2390a29fa24cabbc
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
